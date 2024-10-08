@@ -1,0 +1,1003 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #4a69bd;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.logo a {
+    color: white;
+    text-decoration: none;
+}
+
+.search-bar {
+    flex-grow: 1;
+    margin: 0 20px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 5px;
+}
+
+.auth-buttons a {
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+.content-wrapper {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-right: 1px solid #ddd; /* 오른쪽 테두리 추가 */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 오른쪽에 그림자 효과 추가 */
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0; /* 마진 제거 */
+}
+
+.sidebar li {
+    margin-bottom: 15px; /* 간격 약간 증가 */
+    border-bottom: 1px solid #ddd; /* 각 항목 아래에 구분선 추가 */
+    padding-bottom: 10px; /* 구분선과 텍스트 사이 간격 */
+}
+
+.sidebar li:last-child {
+    border-bottom: none; /* 마지막 항목의 구분선 제거 */
+    margin-bottom: 0; /* 마지막 항목의 아래 마진 제거 */
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold; /* 글씨를 굵게 */
+    transition: color 0.3s ease; /* 색상 변화에 애니메이션 효과 */
+}
+
+.sidebar a:hover {
+    color: #4a69bd; /* 마우스 오버 시 색상 변경 */
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.grid-item {
+    background-color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.wide {
+    grid-column: span 3;
+}
+
+h3 {
+    margin-top: 0;
+    color: #4a69bd;
+}
+
+.container {
+    max-width: 400px;
+    margin: 50px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #4a69bd;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #3c5aa6;
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-bar {
+        margin: 10px 0;
+    }
+    .content-wrapper {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        order: -1;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 90%;
+        margin: 20px auto;
+        padding: 15px;
+    }
+}
+
+/* 기존 스타일 유지 */
+
+.post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.post-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+}
+
+.post-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.post-info {
+    padding: 15px;
+}
+
+.post-info h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.post-author, .post-date {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+}
+
+.read-more {
+    display: inline-block;
+    margin-top: 10px;
+    color: #4a69bd;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.read-more:hover {
+    text-decoration: underline;
+}
+
+.post-detail {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.post-detail h1 {
+    color: #4a69bd;
+    margin-bottom: 10px;
+}
+
+.post-detail .post-image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.post-detail .post-content {
+    margin-top: 15px;
+    line-height: 1.6;
+}
+
+.back-btn, .delete-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #4a69bd;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn:hover, .delete-btn:hover {
+    background-color: #3c5aa6;
+}
+
+.delete-btn {
+    background-color: #d9534f;
+    margin-left: 10px;
+}
+
+.delete-btn:hover {
+    background-color: #c9302c;
+}
+
+.post-actions {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.write-post-form {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.write-post-form h2 {
+    color: #4a69bd;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.form-group textarea {
+    height: 100px;
+}
+
+.submit-btn {
+    background-color: #4a69bd;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #3c5aa6;
+}
+
+#imagePreview img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.write-btn {
+    background-color: #4a69bd;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.write-btn:hover {
+    background-color: #3c5aa6;
+}
+
+.title-divider {
+    border: 0;
+    height: 1px;
+    background-color: #ddd;
+    margin-bottom: 20px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 기존의 글 작성 폼 스타일은 유지 */
+
+/* community.html에 대한 스타일 */
+.community-content .post-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.community-content .post-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.community-content .post-card a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: flex-start;
+}
+
+.community-content .post-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.community-content .post-info {
+    flex-grow: 1;
+    padding: 15px;
+}
+
+.community-content .post-info h3 {
+    margin: 0 0 10px 0;
+    color: #4a69bd;
+}
+
+.community-content .post-author, 
+.community-content .post-date {
+    margin: 5px 0;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.community-content .post-excerpt {
+    margin-top: 10px;
+    color: #333;
+    font-size: 0.95em;
+    line-height: 1.4;
+}
+
+/* main.html에 대한 스타일 (기존 스타일 유지) */
+.main-content .post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.main-content .post-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.main-content .post-card .post-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.main-content .post-card .post-info {
+    padding: 15px;
+}
+
+.main-content .post-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.1em;
+}
+
+.main-content .post-card .post-author,
+.main-content .post-card .post-date {
+    font-size: 0.8em;
+    color: #666;
+    margin: 5px 0;
+}
+
+.main-content .post-card .read-more {
+    display: inline-block;
+    margin-top: 10px;
+    color: #4a69bd;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#addEventForm input,
+#addEventForm textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+}
+
+#addEventForm button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+#deleteEventBtn {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* 기존 스타일은 유지하고 아래 스타일을 추가 또는 수정합니다 */
+
+.community-content {
+    padding: 20px;
+    width: 79%;
+    box-sizing: border-box;
+}
+
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.title-container h1 {
+    margin: 0;
+}
+
+.write-btn {
+    background-color: #4a69bd;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.write-btn:hover {
+    background-color: #3c5aa6;
+}
+
+.title-divider {
+    border: 0;
+    height: 1px;
+    background-color: #ddd;
+    margin-bottom: 20px;
+}
+
+.post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-item {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.post-item:hover {
+    transform: translateY(-5px);
+}
+
+.post-item a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.post-content {
+    display: flex;
+    align-items: flex-start;
+}
+
+.post-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.post-info {
+    flex-grow: 1;
+    padding: 15px;
+}
+
+.post-info h3 {
+    margin: 0 0 10px 0;
+    color: #4a69bd;
+}
+
+.post-author, 
+.post-date {
+    margin: 5px 0;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.post-excerpt {
+    margin-top: 10px;
+    color: #333;
+    font-size: 0.95em;
+    line-height: 1.4;
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 768px) {
+    .post-content {
+        flex-direction: column;
+    }
+
+    .post-image {
+        width: 100%;
+        height: 200px;
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+}
+
+/* 기존 스타일은 유지하고 아래 스타일을 추가합니다 */
+
+/* 회원가입 및 내 정보 폼 스타일 */
+.form-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.form-container h1 {
+    text-align: center;
+    color: #4a69bd;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.form-group input[readonly] {
+    background-color: #f0f0f0;
+}
+
+.form-submit {
+    width: 100%;
+    padding: 10px;
+    background-color: #4a69bd;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-submit:hover {
+    background-color: #3c5aa6;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 600px) {
+    .form-container {
+        width: 90%;
+        padding: 15px;
+    }
+}
+
+/* 활동 상세 페이지 스타일 */
+.activity-detail {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin-top: 20px;
+}
+
+.activity-detail h1 {
+    color: #4a69bd;
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+.activity-meta {
+    display: flex;
+    justify-content: space-between;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.activity-url {
+    margin-bottom: 20px;
+}
+
+.activity-url a {
+    color: #4a69bd;
+    text-decoration: none;
+}
+
+.activity-url a:hover {
+    text-decoration: underline;
+}
+
+.activity-content {
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.activity-images h3 {
+    color: #4a69bd;
+    margin-bottom: 15px;
+}
+
+.image-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.activity-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.activity-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.back-btn, .delete-btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn {
+    background-color: #4a69bd;
+    color: white;
+}
+
+.back-btn:hover {
+    background-color: #3c5aa6;
+}
+
+.delete-btn {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: #c9302c;
+}
+
+@media (max-width: 768px) {
+    .activity-meta {
+        flex-direction: column;
+    }
+    
+    .activity-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .back-btn, .delete-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* 상세 페이지 공통 스타일 */
+.detail-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin-top: 20px;
+}
+
+.detail-header {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.detail-header h1 {
+    color: #4a69bd;
+    margin-bottom: 15px;
+    font-size: 28px;
+}
+
+.detail-meta {
+    display: flex;
+    justify-content: space-between;
+    color: #666;
+    font-size: 14px;
+}
+
+.detail-url, .detail-image {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.detail-url a {
+    color: #4a69bd;
+    text-decoration: none;
+}
+
+.detail-url a:hover {
+    text-decoration: underline;
+}
+
+.detail-content {
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.detail-images h3 {
+    color: #4a69bd;
+    margin-bottom: 15px;
+}
+
+.image-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.detail-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.detail-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.back-btn, .delete-btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn {
+    background-color: #4a69bd;
+    color: white;
+}
+
+.back-btn:hover {
+    background-color: #3c5aa6;
+}
+
+.delete-btn {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: #c9302c;
+}
+
+@media (max-width: 768px) {
+    .detail-meta {
+        flex-direction: column;
+    }
+    
+    .detail-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .back-btn, .delete-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+.members-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.member-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.member-card:hover {
+    transform: translateY(-5px);
+}
+
+.member-card h3 {
+    color: #4a69bd;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.member-card p {
+    margin: 5px 0;
+    color: #333;
+}

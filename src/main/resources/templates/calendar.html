@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동아리 캘린더 - BlueScreen</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.33/moment-timezone-with-data.min.js"></script>
+    <style>
+        .fc-event {
+            white-space: normal;
+            overflow: hidden;
+            height: auto !important;
+        }
+        .fc-event-main {
+            padding: 2px;
+        }
+        .fc-event-time {
+            font-weight: bold;
+        }
+        .fc-event-title {
+            margin-top: 2px;
+        }
+        .fc-timegrid-event {
+            min-height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="/">BlueScreen</a></div>
+        <div class="search-bar">
+            <input type="text" placeholder="검색어를 입력하세요">
+        </div>
+        <div class="auth-buttons">
+            <div sec:authorize="isAnonymous()">
+                <a href="/login">로그인</a>
+                <a href="/register">회원가입</a>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <span th:text="${#authentication.name}"></span>
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit">로그아웃</button>
+                </form>
+            </div>
+        </div>
+    </header>
+    <div class="content-wrapper">
+        <div class="sidebar">
+            <ul>
+                <li><a href="/community">활동내역</a></li>
+                <li><a href="/calendar">동아리 캘린더</a></li>
+                <li><a href="/members">동아리 멤버</a></li>
+                <li><a href="/myinfo">내 정보</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <h1>동아리 캘린더</h1>
+            <div id="calendar"></div>
+        </div>
+    </div>
+
+    <!-- 이벤트 추가 모달 -->
+    <div id="addEventModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>일정 추가</h2>
+            <form id="addEventForm">
+                <input type="text" id="eventTitle" placeholder="일정 제목" required>
+                <input type="date" id="eventDate" required>
+                <input type="time" id="eventTime" required>
+                <textarea id="eventDescription" placeholder="세부 내용" required></textarea>
+                <button type="submit">추가</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 이벤트 상세 모달 -->
+    <div id="eventDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="eventDetailTitle"></h2>
+            <p id="eventDetailDateTime"></p>
+            <p id="eventDetailDescription"></p>
+            <p id="eventDetailCreator"></p>
+            <button id="deleteEventBtn" style="display: none;">삭제</button>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var addEventModal = document.getElementById('addEventModal');
+            var eventDetailsModal = document.getElementById('eventDetailsModal');
+            var addEventForm = document.getElementById('addEventForm');
+            var deleteEventBtn = document.getElementById('deleteEventBtn');
+            var currentUsername = /*[[${#authentication.name}]]*/ '';
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                selectable: true,
+                nextDayThreshold: '24:00:00', // 날짜 변경 기준점을 다음날 00:00으로 설정
+                eventTimeFormat: {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                    meridiem: false
+                },
+                select: function(info) {
+                    document.getElementById('eventDate').value = info.startStr;
+                    addEventModal.style.display = 'block';
+                },
+                eventClick: function(info) {
+                    showEventDetails(info.event);
+                },
+                eventContent: function(arg) {
+                    let eventDate = moment(arg.event.start).tz('Asia/Seoul');
+                    let timeText = eventDate.format('HH:mm');
+                    let titleText = arg.event.title;
+                    
+                    // 날짜가 다음날로 넘어가는 경우에도 동일하게 처리
+                    return {
+                        html: '<div class="fc-event-main">' +
+                              '<div class="fc-event-time">' + timeText + '</div>' +
+                              '<div class="fc-event-title">' + titleText + '</div>' +
+                              '</div>'
+                    };
+                },
+                events: function(info, successCallback, failureCallback) {
+                    axios.get('/calendar/events')
+                        .then(function(response) {
+                            var events = response.data.map(function(event) {
+                                let eventDate = moment.tz(event.start, 'Asia/Seoul');
+                                return {
+                                    id: event.id,
+                                    title: event.title,
+                                    start: eventDate.toDate(),
+                                    allDay: false,
+                                    extendedProps: {
+                                        description: event.description,
+                                        username: event.username,
+                                        authorName: event.authorName
+                                    }
+                                };
+                            });
+                            successCallback(events);
+                        })
+                        .catch(function(error) {
+                            console.error('Error fetching events:', error);
+                            failureCallback(error);
+                        });
+                }
+            });
+
+            calendar.render();
+
+            addEventForm.onsubmit = function(e) {
+                e.preventDefault();
+                var title = document.getElementById('eventTitle').value;
+                var date = document.getElementById('eventDate').value;
+                var time = document.getElementById('eventTime').value;
+                var description = document.getElementById('eventDescription').value;
+
+                var dateTime = moment.tz(date + ' ' + time, 'Asia/Seoul');
+                var formattedDateTime = dateTime.toISOString(); // ISO 8601 형식으로 변환
+
+                axios.post('/calendar/add', {
+                    title: title,
+                    dateTime: formattedDateTime,
+                    description: description
+                })
+                .then(function (response) {
+                    console.log('Server response:', response.data);
+                    let eventDate = moment(response.data.start).tz('Asia/Seoul');
+                    let newEvent = {
+                        id: response.data.id,
+                        title: response.data.title,
+                        start: eventDate.toDate(),
+                        extendedProps: {
+                            description: response.data.description,
+                            username: response.data.username,
+                            authorName: response.data.authorName
+                        }
+                    };
+                    console.log('New event data:', newEvent);  // 디버깅을 위한 로그
+                    calendar.addEvent(newEvent);
+                    addEventModal.style.display = 'none';
+                    addEventForm.reset();
+                })
+                .catch(function (error) {
+                    console.error('Error:', error);
+                    if (error.response) {
+                        console.error('Error response:', error.response.data);
+                        alert('일정 추가에 실패했습니다: ' + JSON.stringify(error.response.data));
+                    } else {
+                        alert('일정 추가에 실패했습니다.');
+                    }
+                });
+            };
+
+            function showEventDetails(event) {
+                document.getElementById('eventDetailTitle').textContent = event.title;
+                let eventDate = moment(event.start).tz('Asia/Seoul');
+                document.getElementById('eventDetailDateTime').textContent = eventDate.format('YYYY년 MM월 DD일 HH:mm');
+                document.getElementById('eventDetailDescription').textContent = event.extendedProps.description;
+                document.getElementById('eventDetailCreator').textContent = '작성자: ' + event.extendedProps.authorName;
+                
+                if (event.extendedProps.username === currentUsername) {
+                    deleteEventBtn.style.display = 'block';
+                    deleteEventBtn.onclick = function() {
+                        deleteEvent(event.id);
+                    };
+                } else {
+                    deleteEventBtn.style.display = 'none';
+                }
+
+                eventDetailsModal.style.display = 'block';
+            }
+
+            function deleteEvent(eventId) {
+                if (confirm('정말로 이 일정을 삭제하시겠습니까?')) {
+                    axios.delete('/calendar/delete/' + eventId)
+                    .then(function (response) {
+                        calendar.getEventById(eventId).remove();
+                        eventDetailsModal.style.display = 'none';
+                    })
+                    .catch(function (error) {
+                        console.error('Error:', error);
+                        alert('일정 삭제에 실패했습니다.');
+                    });
+                }
+            }
+
+            // 모달 닫기
+            var closeButtons = document.getElementsByClassName('close');
+            for (var i = 0; i < closeButtons.length; i++) {
+                closeButtons[i].onclick = function() {
+                    addEventModal.style.display = 'none';
+                    eventDetailsModal.style.display = 'none';
+                }
+            }
+
+            window.onclick = function(event) {
+                if (event.target == addEventModal) {
+                    addEventModal.style.display = 'none';
+                }
+                if (event.target == eventDetailsModal) {
+                    eventDetailsModal.style.display = 'none';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

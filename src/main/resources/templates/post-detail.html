@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${post.title} + ' - BlueScreen'">게시물 제목 - BlueScreen</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="/">BlueScreen</a></div>
+        <div class="search-bar">
+            <input type="text" placeholder="검색어를 입력하세요">
+        </div>
+        <div class="auth-buttons">
+            <div sec:authorize="isAnonymous()">
+                <a href="/login">로그인</a>
+                <a href="/register">회원가입</a>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <span th:text="${#authentication.name}"></span>
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit">로그아웃</button>
+                </form>
+            </div>
+        </div>
+    </header>
+    <div class="content-wrapper">
+        <div class="sidebar">
+            <ul>
+                <li><a href="/community">활동내역</a></li>
+                <li><a href="/calendar">동아리 캘린더</a></li>
+                <li><a href="/members">동아리 멤버</a></li>
+                <li><a href="/myinfo">내 정보</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <div class="detail-container">
+                <div class="detail-header">
+                    <h1 th:text="${post.title}">게시물 제목</h1>
+                    <div class="detail-meta">
+                        <p class="detail-author" th:text="${'작성자: ' + (post.authorName ?: '알 수 없음')}">작성자: 알 수 없음</p>
+                        <p class="detail-date" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">2023-01-01 00:00</p>
+                    </div>
+                </div>
+                <div th:if="${post.imageUrl}" class="detail-image">
+                    <img th:src="${post.imageUrl}" alt="게시물 이미지">
+                </div>
+                <div class="detail-content" th:text="${post.content}">게시물 내용</div>
+                <div class="detail-actions">
+                    <a href="/community" class="back-btn">목록으로 돌아가기</a>
+                    <button th:if="${#authentication.name == post.authorUsername}"
+                            th:attr="onclick='deletePost(\'' + ${post.id} + '\')'" class="delete-btn">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        function deletePost(postId) {
+            if (confirm('정말로 이 게시물을 삭제하시겠습니까?')) {
+                fetch('/api/posts/' + postId, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }).then(response => {
+                    if (response.ok) {
+                        window.location.href = '/community';
+                    } else {
+                        alert('게시물 삭제에 실패했습니다.');
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
