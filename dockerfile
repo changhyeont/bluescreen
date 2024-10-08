@@ -1,14 +1,16 @@
 # 1. OpenJDK 기반 이미지를 사용
 FROM openjdk:17-jdk-alpine
 
-# 2. Gradle 빌드를 위한 단계 추가
+# 2. 작업 디렉토리 설정
 WORKDIR /app
-COPY . /app
+
+# 3. 프로젝트의 모든 파일을 Docker 컨테이너로 복사
+COPY . .
+
+# 4. Gradle을 사용해 프로젝트 빌드
 RUN ./gradlew build
 
-# 3. Gradle 빌드 후 생성된 JAR 파일을 복사
-COPY build/libs/bluescreen-0.0.1-SNAPSHOT.jar app.jar
+# 5. 빌드된 JAR 파일을 실행하는 명령어
+CMD ["java", "-jar", "build/libs/bluescreen-0.0.1-SNAPSHOT.jar"]
 
-# 4. JAR 파일을 실행하는 명령어
-ENTRYPOINT ["java", "-jar", "/app.jar"]
 
